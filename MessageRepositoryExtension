@@ -1,0 +1,187 @@
+package com.cando.message.repository;
+
+import com.cando.core.common.Response;
+import com.cando.core.exceptions.CDException;
+import com.cando.core.repository.CDCRUDOperationsExtension;
+import com.cando.events.common.IConstants;
+import com.cando.events.dto.CDJSONResponse;
+import com.cando.message.model.CDMessage;
+import com.cando.ordermanagement.model.EventOrder;
+
+import java.util.List;
+
+/**
+ * Package Name: com.cando.message.repository
+ * Author: Pradeep kumar
+ */
+public interface MessageRepositoryExtension extends CDCRUDOperationsExtension<CDMessage>
+{
+/*
+	*/
+/**
+ * this method is used to add a addition properties for a relations like:-MESSAGE_FROM,MESSAGE_FROM and MESSAGE_THREAD
+ *
+ * @param statusToSet
+ * 		the message for which  the property  statusToSet and other properties is going to be modified or changed
+ * @return response
+ * @throws CDException
+ *//*
+
+	public Response changeStatus( List<CDMessage> messages, IConstants.EnumMessageStatus statusToSet ) throws CDException;
+
+	*/
+/**
+ * this method is used to create message node and creating a relationship MESSAGE_FROM between user and this message
+ * And this method creates the relationship MESSAGE_TO between message and list users
+ * And creates the relationship  MESSAGE_THREAD  between message and parent message it exists.
+ *
+ * @param message
+ * 		the message which is going to send
+ * @return reponse
+ * @throws CDException
+ *//*
+
+	public Response sendMessage( CDMessage message ) throws CDException;
+
+	*/
+/**
+ * This method sends the notification for all Users who are in current users Circle. When ever user created an
+ * Event.
+ *
+ * @param message
+ * 		creating a message using the properties from createdEvent and sending the confirm message to event organizer
+ * @return
+ * @throws CDException
+ *//*
+
+	public Response sendNotification( CDMessage message ) throws CDException;
+
+	*/
+/**
+ * this method is used to get count of inbox unread messages
+ *
+ * @return list of messages
+ * @throws CDException
+ *//*
+
+	public List<CDMessage> getMessages( String type, int indexFrom, int indexTo ) throws CDException;
+
+	*/
+/**
+ * this method is used to show all inbox messages for a current user
+ *
+ * @return page<CDMessage></CDMessage> messages
+ * @throws CDException
+ *//*
+
+	public List<CDMessage> showtopmessages() throws CDException;
+
+	*/
+/**
+ * this method is used to convert all inbox messages into Unread Messages
+ *
+ * @return page<CDMessage></CDMessage> messages
+ * @throws CDException
+ *//*
+
+	public int markAllAsUnReadMessage() throws CDException;
+
+	*/
+/**
+ * this method is used to convert all inbox messages into Read Messages
+ *
+ * @return page<CDMessage></CDMessage> messages
+ * @throws CDException
+ *//*
+
+	public int markAllAsReadMessage() throws CDException;
+
+	*/
+/**
+ * this method is used to convert all inbox messages into  Archieve Messages
+ *
+ * @return page<CDMessage></CDMessage> messages
+ * @throws CDException
+ *//*
+
+	public int markAllAsArchievedMessage() throws CDException;
+
+	*/
+/**
+ * This method is used to create and send notification message
+ *
+ * @param message
+ * 		message object to send notification message
+ * @return sent notification message
+ * @throws CDException
+ *//*
+
+	public CDMessage createAndSendNewNotificationMessage( CDMessage message ) throws CDException;
+
+	*/
+
+	/**
+	 * This method is used to  send notification message to event organizer that user has purchased tickets
+	 *
+	 * @param eventOrder
+	 * 		eventOrder order belonging to event
+	 * @throws CDException
+	 */
+	public void sendNotificationToEventOrganizer( EventOrder eventOrder ) throws CDException;
+
+	/**
+	 * This method is used to  send  message to user has purchased tickets when order is approved
+	 *
+	 * @param eventOrder
+	 * 		eventOrder order belonging to event message to be sent
+	 * @throws CDException
+	 */
+	public void sendOrderStatusMsg( EventOrder eventOrder ) throws CDException;
+
+
+	/**
+	 * This method is used to create and send message
+	 *
+	 * @param message
+	 * 		message object the message to be sent
+	 * @param messageType
+	 * 		type of message notification/message
+	 * @return new created message
+	 * @throws CDException
+	 * 		if any exception is thrown
+	 */
+
+	public CDMessage createAndSendMessage( CDMessage message, IConstants.EnumMessage messageType ) throws CDException;
+
+	/**
+	 * This method is used to create and send message to localUsers in within the portal
+	 *
+	 * @param message
+	 * 		message to be sent
+	 * @param toUsersEmails
+	 * 		list of toUsersEmails to send message
+	 * @param fromUserEmail
+	 * 		email id of the user form whom the message to be sent
+	 * @return Status of the message as json response
+	 */
+	public CDJSONResponse createAndSendMessage( String message, List<String> toUsersEmails, String fromUserEmail );
+
+	/**
+	 * This method is used to get the top 3 messages of the user
+	 *
+	 * @return Response object total messages count and top 3 messages
+	 * @throws CDException
+	 */
+	public Response getTopMessages() throws CDException;
+
+	/**
+	 * This method is used to get the top 3 notifications of the user
+	 *
+	 * @return Response object total notifications count and top 3 notifications
+	 * @throws CDException
+	 */
+	public Response getTopNotifications() throws CDException;
+
+
+}
+

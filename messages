@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title></title>
+		<th:block th:replace="fragments/layout::fragmentCSSCommon"/>
+	</head>
+	<body>
+		<div id="messages">
+			<div class="list-group">
+				<div th:each="message : ${messages}">
+					<a class="list-group-item" href="#"  th:attr="data-url=@{${'/mail/getmessage'}(objectUUID=${message.objectUUID})},data-frgid=${'message'}" style="height:70px">
+						<div th:unless="${#strings.isEmpty(message.fromUser)}">
+							<div th:unless="${#strings.isEmpty(message.fromUser.profile)}">
+								<div th:unless="${#strings.isEmpty(message.fromUser.profile.photo)}">
+									<div class="image" th:with="photoUrl =${message.fromUser.profile.photo ne null ? message.fromUser.profile.photo : ''}">
+										<img th:src="@{${photoUrl}}" th:unless="${#strings.isEmpty(photoUrl)}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="image" th:if="${#strings.isEmpty(message.fromUser)}">
+							<div class="img-thumbnail">
+								<i class="fa fa-user"></i>
+							</div>
+						</div>
+						<div class="data">
+							<span class="title"  th:unless="${#strings.isEmpty(message.fromUser)}" th:text="${message.fromUser.firstName}">Pradeep</span>
+							<span class="ellipsis" th:text="${message.messageSubject}" style="overflow: hidden">Hi!</span>
+							<span class="data-row-item" th:text="${#calendars.format(message.creationDate,'dd MMMM yyyy')}">01-Nov-2014</span>
+						</div>
+					</a>
+				</div>
+				<div th:if="${#lists.isEmpty(messages)}">
+					<span>No Messages</span>
+				</div>
+			</div>
+			<!--<div class="body-main">-->
+				<!--<div class="body-content container-fluid">-->
+					<!--<div class="panel panel-default search-results-box">-->
+						<!--<div class="panel-body">-->
+							<!--<div class="cando-listing-box user-listing" th:unless="${#lists.isEmpty(messages)}">-->
+								<!--<div class="cando-listing-content">-->
+									<!--<ul class="cando-list">-->
+										<!--<li class="cando-list-item" th:each="message : ${messages}">-->
+											<!--<div class="image">-->
+												<!--<div th:unless="${#strings.isEmpty(message.fromUser)}">-->
+													<!--<div th:unless="${#strings.isEmpty(message.fromUser.profile)}">-->
+														<!--<div th:unless="${#strings.isEmpty(message.fromUser.profile.photo)}">-->
+															<!--<div  th:with="photoUrl =${message.fromUser.profile.photo ne null ? message.fromUser.profile.photo : ''}">-->
+																<!--<img th:src="@{${photoUrl}}" th:unless="${#strings.isEmpty(photoUrl)}"/>-->
+															<!--</div>-->
+														<!--</div>-->
+													<!--</div>-->
+												<!--</div>-->
+												<!--<div th:if="${#strings.isEmpty(message.fromUser)}">-->
+													<!--<div class="img-thumbnail">-->
+														<!--<i class="fa fa-user"></i>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+											<!--<div class="data">-->
+												<!--<h3 class="title"><span th:text="${message.fromUser}">User</span></h3>-->
+												<!--<div class="data-row">-->
+													<!--<span class="data-row-item" th:text="${message.messageSubject}">MessageBody</span>-->
+													<!--<span class="data-row-item" th:text="${#calendars.format(message.creationDate,'dd MMMM yyyy')}">Received From</span>-->
+												<!--</div>-->
+											<!--</div>-->
+										<!--</li>-->
+									<!--</ul>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<div class="alert alert-info" role="alert" th:if="${#lists.isEmpty(messages)}">-->
+								<!--<span>No messages found.. </span>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+			<div class="panel-footer" th:if="${totalPages} > 0">
+				<div class="pull-left">
+					<p><span th:text="${totalMessages}">100</span> TotalMessage</p>
+				</div>
+				<div class="pull-right">
+					<div class="inline middle">
+						<p>Page <span th:text="${pn + 1}">1</span> of <span th:text="${totalPages}"></span>
+						</p>
+					</div>
+					<span>
+						<a class="messages-pagination" href="#" th:attr="data-url=@{${mappingUrl}(pageNo=${pn-1})},data-frgid=${'messages'}">
+							<i class="ace-icon fa fa-step-backward middle"></i>
+						</a>
+					</span>
+					<span>
+						<input type="text" maxlength="3" th:value="${pn+1}" style="width: 34px;height: 24px;text-align: center"/>
+					</span>
+					<span>
+						<a class="messages-pagination" href="#" th:attr="data-url=@{${mappingUrl}(pageNo=${pn+1})},data-frgid=${'messages'}">
+							<i class="ace-icon fa fa-step-forward middle"></i>
+						</a>
+					</span>
+				</div>
+			</div>
+		</div>
+		<th:block th:replace="fragments/layout::fragmentJSCommon"/>
+		<script src="../../../..//resources/js/message/inbox.js" th:src="@{'/resources/js/message/inbox.js?v=' + #{version}}"></script>
+		</body>
+</html>

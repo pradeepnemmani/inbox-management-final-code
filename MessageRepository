@@ -1,0 +1,149 @@
+package com.cando.message.repository;
+
+import com.cando.core.repository.CDGraphRepository;
+import com.cando.message.mappers.MessageMapper;
+import com.cando.message.mappers.NotificationMapper;
+import com.cando.message.model.CDMessage;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
+
+/**
+ * Package Name: com.cando.message.repository
+ * Author: Pradeep Kumar
+ */
+public interface MessageRepository extends CDGraphRepository<CDMessage>, MessageRepositoryExtension
+{
+	/*// -------------------------------------------------------------------------
+	// Derived finder methods
+	//
+	// -------------------------------------------------------------------------
+
+	// Derived Query methods.
+	// Please see META-INF/neo4j-named-queries.properties for the queries
+	// -------------------------------------------------------------------------
+
+	*//**
+ * This Returns CDUse who Sent a Particular Message
+ *
+ * @param messageUUID
+ * 		messageUUID of a Sent  message
+ * @return CDUser
+ *//*
+	CDUser getSentUser( @Param( "messageUUID" ) String messageUUID );
+
+	*//**
+ * This method finds the SENT MESSAGES based on the specified userUUID
+ *
+ * @param userUUID
+ * 		by using userUUID we get particular User, and for  that  particular user this method  gets all Sent Messages
+ * @return List<CDMessage></CDMessage> for the specified user UUID
+ *//*
+	Page<CDMessage> getAllSentMessages( @Param( "userUUID" ) String userUUID, Pageable pageable );
+
+	*//**
+ * This method returns all Unread Messages sorted by Descending Order of node creation date
+ *
+ * @param userUUID
+ * 		UUID of user
+ * @return List of all Unread Messages
+ *//*
+	Page<CDMessage> getAllUnreadMessages( @Param( "userUUID" ) String userUUID, Pageable pageable );
+
+	*//**
+ * This method returns all Read Messages sorted by Descending Order of node creation date
+ *
+ * @param userUUID
+ * 		UUID of user
+ * @return
+ *//*
+	Page<CDMessage> getAllReadMessages( @Param( "userUUID" ) String userUUID, Pageable pageable );
+	*//**
+ * This method returns count of Unread Messages sorted by Descending Order of node creation date
+ *
+ * @param userUUID
+ * 		UUID of user
+ * @return List of all Unread Messages
+ *//*
+	int getCountOfAllReadMessages (@Param( "userUUID" ) String userUUID);
+	*//**
+ * This method finds the COUNT of SENT MESSAGES based on the specified userUUID
+ *
+ * @param userUUID
+ * 		by using userUUID this method finds the  particular User, and for that particular user this method  gets all Sent Messages and count
+ * @return int  for the specified user UUID
+ *//*
+	int getCountOfSentMessages( @Param( "userUUID" ) String userUUID );
+
+	*//**
+ * This method finds the RECEIVED MESSAGES based on the specified userUUID
+ *
+ * @param userUUID
+ * 		by using userUUID we get particular User, and for particular user this method  gets all Sent Messages
+ * @return List<CDMessage></CDMessage> for the specified user UUID
+ *//*
+	Page<CDMessage> getAllInboxMessages( @Param( "userUUID" ) String userUUID, Pageable pageable );
+
+	*//**
+ * This method finds the COUNT of RECEIVED MESSAGES based on the specified userUUID
+ *
+ * @param userUUID
+ * 		by using userUUID this method finds the  particular User, and for that particular user this method  gets all Received Messages and count
+ * @return int  for the specified user UUID
+ *//*
+	int getCountOfReceivedMessages( @Param( "userUUID" ) String userUUID );
+
+	*//**
+ * this method finds the parent message for a given message objectUUID
+ *
+ * @param messageUUID
+ * 		objectUUID of a messages
+ * @return message
+ *//*
+	CDMessage getParentMessage( @Param( "messageUUID" ) String messageUUID );
+
+	*//**
+ * this method is used to get count of unread messages
+ *
+ * @param userUUID
+ * 		objectUUID of a User
+ * @return int
+ *//*
+	int getCountOfUnreadMessages( @Param( "userUUID" ) String userUUID );
+
+	*//**
+ * this method is used to get an trash message of a user
+ *
+ * @param userUUID
+ * 		objectUUID   of a user
+ * @return Page<CDMessage></CDMessage>
+ *//*
+	Page<CDMessage> getAllTrashMessages(@Param( "userUUID" ) String userUUID,Pageable pageable);
+
+	*/
+
+	/**
+	 * this method is used to get count of trash message
+	 *
+	 * @param userUUID
+	 * @return
+	 *//*
+	int getCountOfTrashMessages(@Param( "userUUID" ) String userUUID);*/
+
+	// new api
+
+	int getNewMessagesCount( @Param( "userUUID" ) String userUUID );
+
+	int getNewNotificationsCount( @Param( "userUUID" ) String userUUID );
+
+	Page<MessageMapper> getAllInboxMessages( @Param( "userUUID" ) String userUUID, Pageable pageable );
+
+	Page<NotificationMapper> getAllInboxNotifications( @Param( "userUUID" ) String userUUID, Pageable pageable );
+
+	int getCountOfAllInboxMessages( @Param( "userUUID" ) String userUUID );
+
+	int getCountOfAllInboxNotifications( @Param( "userUUID" ) String userUUID );
+
+
+}
+

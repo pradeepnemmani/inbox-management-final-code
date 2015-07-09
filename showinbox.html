@@ -1,0 +1,213 @@
+<!DOCTYPE html> <html xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns="http://www.w3.org/1999/xhtml" lang="en"> <head> <style>
+			span.icon {
+				margin-right: 1.5cm;
+			}
+		</style> <link href="/resources/img/favicon.ico" rel="shortcut icon"/> <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/journal/bootstrap.min.css" rel="stylesheet"/> <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/> <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.js"></script><![endif]--> </head> <body> <div class="body-main"> <div class="body-header"> <div class="container-fluid ei-container-fluid"></div> <nav class="navbar navbar-default" role="navigation" id="fragmentMenuBar"> <div class="container-fluid"> <div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand ei-brand" href="/"> <span>eventinn</span> <span class="release-type">BETA</span> </a> </div> <div class="collapse navbar-collapse" id="navbar-collapse"> <form class="navbar-form navbar-left" id="searchContainer" action="/search" method="get" role="form"> <div class="input-group"> <div class="input-group-addon"> <div id="searchbarDropdown" class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class="fa fa-bars fa-lg"></span>&nbsp;<i class="fa fa-caret-down"></i> <input type="text" id="searchContext" name="searchContext" class="hidden" value="fa fa-bars fa-lg"/> <input type="text" id="opContext" name="opContext" class="hidden" value=""/> </a> <ul class="dropdown-menu animate-dropdown-menu"> <li> <input type="text" id="pastEvents" name="past" value="off" class="hidden"/> <a class="search-list" href="#" data-action="/search" data-class="fa fa-calendar" data-past="off" placeholder="Search upcoming events"><i class="fa fa-calendar"></i>&nbsp;<span>Upcoming events</span><span class="option-select pull-right fa fa-check"></span></a> </li> <li class="divider"></li> <li> <a class="search-list" href="#" data-action="/search" data-class="fa fa-calendar-o" data-past="on" placeholder="Search past events"><i class="fa fa-calendar-o"></i>&nbsp;<span>Past Events</span></a> </li> <li class="divider"></li> <li> <a class="search-list" href="#" data-action="/groups/search" data-class="fa fa-group" data-past="off" placeholder="Search groups"><i class="fa fa-group"></i>&nbsp;<span>Groups</span></a> </li> <li class="divider"></li> <li> <a class="search-list" id="evttags" href="#" data-action="/search" data-class="fa fa-tags" data-past="off" placeholder="Search events on tags"><i class="fa fa-tags"></i>&nbsp;<span>Tags</span></a> </li> </ul> </div> </div> <input class="form-control" type="text" id="searchText" name="searchText" placeholder="Search events" autocomplete="off" value=""/> </div> <button class="btn btn-info search-btn" id="searchbtn" type="submit" disabled="disabled"> <i class="fa fa-search"></i>&nbsp;<span>Search</span> </button> </form> <ul class="nav navbar-nav navbar-right"> <li id="addEvent"> <a href="/event/create"> <i class="fa fa-plus-square"></i> <span>Add Event</span> </a> </li> <li class="dropdown" style="color: #000000"> <a id="inbox" class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-envelope-o" style="color: #d3d3d3;"><sup><span id="unreadMsgCount" style="color: red"></span></sup></i> </a> <ul id="unreadMsgsDropDown" class="dropdown-menu" style="margin-top: 0;border-top-right-radius: 0;border-top-left-radius: 0;padding: 0px;min-width: 400%;"> </ul> </li> <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="fa fa-user"></i> <span id="authUser" data-isauthuser="true">pradeepnemmani</span> <b class="caret"></b> </a> <ul class="dropdown-menu animate-dropdown-menu"> <li> <a href="/user/events/listing"> <i class="fa fa-briefcase"></i> <span>&nbsp;My Listings</span> </a> </li> <li class="divider"></li> <li> <a href="/user/events/mytickets"> <i class="fa fa-ticket"></i> <span>&nbsp;My Tickets</span> </a> </li> <li class="divider"></li> <li> <a href="/groups"> <i class="fa fa-users"></i> <span>Groups</span> </a> </li> <li class="divider"></li> <li> <a href="/user/profile"> <i class="fa fa-user"></i> <span>&nbsp;Profile</span> </a> </li> <li class="divider"></li> <li> <a href="/user/circles"> <i class="fa fa-life-ring"></i> <span>&nbsp;Circles</span> </a> </li> <li class="divider"></li> <li> <a href="/user/contacts"> <i class="fa fa-group"></i> <span>&nbsp;Contacts</span> </a> </li> <li class="divider"></li> <li> <a href="/user/settings"> <i class="fa fa-cogs"></i> <span>&nbsp;Settings</span> </a> </li> <li class="divider"></li> <li> <a href="/auth/logout"> <i class="fa fa-sign-out"></i> <span>Sign Out</span> </a> </li> </ul> </li> </ul> </div> </div> </nav> </div> <div class="row" style="padding-bottom: 0px"> <div class="col-md-offset-3 col-md-7 "> <div class="row" style="margin-bottom: 0px"> <div class="col-md-12"> <div class="row"> <div class="col-md-12"> <div class="panel panel-default" style="margin-bottom: 0px"> <div class="panel-body"> <div class="col-md-2"> <i class="label label-primary">Eventinn Inbox</i> </div> <div class="col-md-offset-6 col-md-2"> <span>pradeepnemmani</span> </div> <div class="col-md-2"> <span> <div> <div> <div class="imgContainer"> <img style="width: 25px" src="/images/0cb12db4-d895-4f3d-9527-d0f46663845c_-1142252507.jpeg"/> </div> </div> </div> </span> </div> </div> </div> </div> </div> </div> </div> <div class="panel panel-default"> <div class="panel-body"> <div class="row"> <div class="col-md-3" style="padding-left: 0px; padding-right: 0px"> <ul class="list-unstyled" style="line-height:30px;background-color:#eeeeee; height:400px;"> <li> <a class=" btn-sm" href="#" id="allinboxmessages" data-frgid="messages" data-url="/mail/getmessages"> <i class="fa fa-inbox"></i><span>Messages</span> <span class="badge" id="messagescount">InboxCount</span> </a> <hr/> </li> <li> <a class=" btn-sm" href="#" id="allsent" data-frgid="messages" data-url="/mail/getsentmessages"> <i class="fa fa-external-link"></i><span>Sent</span> <span class="badge" id="sentcount">SentCount</span> </a> <hr/> </li> <li> <a class=" btn-sm" href="#" id="alltrash" data-frgid="messages" data-url="/mail/gettrashmessages"> <i class="fa fa-trash-o"></i><span>Trash</span> <span class="badge" id="trashcount">TrashCount</span> </a> </li> </ul> </div> <div class="col-md-9" style="padding-left: 0px"> <div class="row"> <div class="col-md-2"> <a class="btn btn-default btn-sm" href="#"><i class="fa fa-edit"></i>&nbsp;<span>New</span></a> </div> <div class="col-md-offset-7 col-md-3"> <div class="dropdown"> <button class="btn btn-primary btn-sm" type="button" id="options" data-toggle="dropdown" aria-expanded="true"> <i class="fa fa-cogs"></i>&nbsp;<span>Options</span> <span class="caret"></span> </button> <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"> <li role="presentation"><a id="markallasRead" role="menuitem" tabindex="-1" href="#">MarkAllAsRead</a></li> <li role="presentation"><a id="markallasunread" tabindex="-1" href="#">MarkAllAsUnRead</a></li> <li role="presentation"><a id="deleteallinbox" tabindex="-1" href="#">DeleteAllInbox</a></li> </ul> </div> </div> </div> <hr style="margin-top: 0px;margin-bottom: 0px"/> <span id="messages" data-frgid="messages" data-url="/mail/getmessages"></span> <div id="listofmessages"> </div> </div> </div> </div> </div> </div> </div> </div> <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> <script>
+	/*<![CDATA[*/
+	$( document ).ready( function () {
+		initSearchContainerListeners();
+		initScrollListener();
+		function initSearchContainerListeners() {
+			var $contextIcon = $( '#searchContext' ).val(), $srchObj = $( 'a.search-list[data-class="' + $contextIcon + '"]' )
+					, $srchPlaceholder = $srchObj.attr( 'placeholder' ), $srchbtn = $( '#searchContainer button#searchbtn' )
+					, $srchPastIcon = $( 'a.search-list[data-past="on"]' ).data( 'class' );
+			var apndHtml = "<span class='option-select pull-right fa fa-check'/>";
+			$( '#searchText' ).attr( 'placeholder', $srchPlaceholder );
+			$srchObj.append( apndHtml );
+			$contextIcon === $srchPastIcon ? $( '#pastEvents' ).val( 'on' ) : $( '#pastEvents' ).val( 'off' );
+			$( '#searchContainer #searchText' ).keyup( function () {
+				$( '#searchText' ).val().length > 0 ? $srchbtn.removeAttr( 'disabled' ) : $srchbtn.attr( 'disabled', 'disabled' )
+			} );
+			$( 'a.search-list' ).click( function ( e ) {
+				e.preventDefault();
+				$( 'a.search-list .option-select' ).remove();
+				var $this = $( this ), $seletIcon = $this.data( 'class' );
+				$( '#searchbarDropdown > .dropdown-toggle > span' ).removeClass().addClass( $seletIcon );
+				$( '#searchText' ).attr( 'placeholder', $this.attr( 'placeholder' ) );
+				$this.append( apndHtml );
+				$( '#searchContainer.navbar-form' ).attr( 'action', $this.data( 'action' ) );
+				$( '#pastEvents' ).val( $this.data( 'past' ) );
+				$( '#searchContext' ).val( $this.data( 'class' ) );
+				var tagsId = $this.attr( 'id' );
+				tagsId === 'evttags' ? $( '#opContext' ).val( 'tags' ) : $( '#opContext' ).val( '' );
+			} );
+		}
+
+		function initScrollListener() {
+			$( window ).on( "scroll", function () {
+				var $menubar = $( '#fragmentMenuBar.navbar' );
+				if ( $( this ).scrollTop() > 70 ) {
+					$menubar.addClass( 'navbar-fixed-top' );
+					$menubar.attr( 'style', 'min-height: 55px;' );
+				}
+				else {
+					$menubar.removeClass( 'navbar-fixed-top' );
+					$menubar.removeAttr( 'style' );
+				}
+			} );
+		}
+
+
+
+		 if ( authUser != null && authUser ) {
+		 $.ajax( { url: "/mail/inboxcount", type: 'GET',
+			 success: function ( data ) {
+				 if ( data != null && data.status === "OK" ) {
+					 data.data > 0 ? $( '#unreadMsgCount' ).text( data.data ) : $( '#unreadMsgCount' ).addClass( 'hidden' );
+					 }
+						 else if ( data.status === "ERROR" ) {
+						 window.location = data.redirectUrl;
+				 }
+			 }
+		 } );
+			 var $inboxmessagescount=0;
+			 $.ajax({url:"",type:'GET',
+				 success:function(data)
+				 {
+					 if(data.status==='OK')
+					 {
+						 if(data.data > 0)
+						 {
+							 $inboxmessagescount=data.data;
+						 }
+					 }
+					 else
+					 {
+						 window.Location=data.urlToRedirect;
+					 }
+				 }
+			 });
+		 function manipulateDate() {
+		 $( "span[id='creationDate']" ).each( function () {
+		 var ele = $( this ), $stDate = ele.data( 'date' );
+		 if ( $stDate != null ) {
+		 ele.text( moment( $stDate ).format( 'DD-MMM-YYYY' ) );
+		 }
+		 } );
+		 }
+
+
+
+		 $( "#inbox" ).click( function ( e ) {
+		 e.preventDefault();
+		 $.ajax( {url: "/mail/gettopmessages", type: 'GET',
+		 success: function ( data ) {
+		 var inboxsize = 0 < $( '#unreadMsgCount' ).text() ? $( '#unreadMsgCount' ).text() : 0;
+		 //						var html = "<li ><span class='text-left'>" + "Messages(" + inboxsize + ")" + "</span></li><div class='list-group ' style='margin-bottom: 0px;padding-left: 0px'>";
+		 var html="<li><span class='text-left'><a  id='messages' href='/mail/showinbox'>" + "Messages(" + $inboxmessagescount + ")" + "</a></span></li><div class='list-group ' style='margin-bottom: 0px;padding-left: 0px'>";
+		 var $msgContainer = $( '#unreadMsgsDropDown' );
+		 if ( data.data instanceof  Array && data.data.length > 0 ) {
+		 if ( data != null && data.status === "OK" ) {
+		 $.each( data.data, function ( index, value ) {
+		 html += "<a href='/mail/showinbox' class='list-group-item' style='margin-bottom: 0'><li class='ellipsis'>";
+		 if ( value.fromUser != null ) {
+		 if ( value.fromUser.firstName != null ) {
+		 html += "<span >" + value.fromUser.firstName + "</span></br>";
+		 }
+		 }
+		 html += "<span>" + value.messageSubject + "</span></br>";
+		 html += "<span style='margin-left:90px;color:cornflowerblue' id='creationDate" + "' data-date='" + value.creationDate + "'>Date</span>";
+		 html += "</li></a>";
+		 } );
+		 $( '#unreadMsgCount' ).text() - (data.data.length) > 0 ? $( '#unreadMsgCount' ).text( ($( '#unreadMsgCount' ).text()) - (data.data.length) ) : $( '#unreadMsgCount' ).text( 0 ).addClass( 'hidden' );
+		 }
+		 else {
+		 console.log( data.data.message );
+		 }
+		 }
+			 if(data.data.length==0)
+			 {
+				 html +="<p style='text-align: center'><span>No New Messages</span></p>";
+			 }
+		 html += "</div>";
+		 $msgContainer.empty().append( html );
+		 console.log( "end" );
+		 manipulateDate();
+		 }
+		 } );
+		 } );
+
+		}
+
+	} );
+	/*]]>*/
+</script> <script src="/resources/js/einn/fragments.js?v=0.81"></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script> <script src="/resources/js/message/inbox.js?v=0.81"></script> <script language="JavaScript">
+			function loadFragment( url, fragmentId, callbackFn ) {
+				$( '#listofmessages' ).empty().append( '<div class="loading"><i class="fa fa-spinner fa-spin fa-3x"></i></div>' ).einnLoadFragment( {
+					url: url, fragmentId: fragmentId, fragmentToInsert: fragmentId,
+					successCallback: function ( r ) {
+						if ( callbackFn ) {
+							callbackFn();
+						}
+					}
+				} );
+			}
+			function initPaginationListeners( $ele ) {
+				$ele.click( function ( e ) {
+					var $this = $( this );
+					e.preventDefault();
+					loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+						initPaginationListeners( $( 'a.messages-pagination' ) );
+					} );
+				} );
+			}
+
+			function manipulateDate() {
+				$( "span[id='creationDate']" ).each( function () {
+					var ele = $( this ), $stDate = ele.data( 'date' );
+					if ( $stDate != null ) {
+						ele.text( moment( $stDate ).format( 'DD-MMM-YYYY' ) );
+					}
+				} );
+			}
+			$( '#allinboxmessages' ).click( function ( e ) {
+				var $this = $( this );
+				e.preventDefault();
+				loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+				} );
+			} );
+
+			$('#allsent' ).click(function(e)
+			{
+				var $this=$(this);
+				e.preventDefault();
+				loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+				} );
+			});
+			$('#alltrash' ).click(function(e)
+			{
+				var $this=$(this);
+				e.preventDefault();
+				loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+				} );
+			});
+
+			$( document ).ready( function () {
+				$.ajax( {url: "/mail/messagescount", type: 'GET',  data: { type: "inbox"},
+					success: function ( data ) {
+						var count = $( "span[id='messagescount']" );
+						count.text( data.data );
+					}
+				} );
+				$.ajax( {url: "/mail/messagescount", type: 'GET',  data: { type: "sent"},
+					success: function ( data ) {
+						var count = $( "span[id='sentcount']" );
+						count.text( data.data );
+					}
+				} );
+				$.ajax( {url: "/mail/messagescount", type: 'GET',  data: { type: "trash"},
+					success: function ( data ) {
+						var count = $( "span[id='trashcount']" );
+						count.text( data.data );
+					}
+				} );
+				var $msg = $( '#messages' );
+				loadFragment( $msg.data( 'url' ), $msg.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+				} );
+			} );
+
+		</script> </body> </html>

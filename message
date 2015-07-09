@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<title></title>
+		<th:block th:replace="fragments/layout::fragmentCSSCommon"/>
+	</head>
+	<body>
+		<div id="message">
+			<div class="article">
+
+					<div class="header">
+						<div th:unless="${#strings.isEmpty(message.fromUser)}">
+							<div th:unless="${#strings.isEmpty(message.fromUser.profile)}">
+								<div th:unless="${#strings.isEmpty(message.fromUser.profile.photo)}">
+									<div class="image" th:with="photoUrl =${message.fromUser.profile.photo ne null ? message.fromUser.profile.photo : ''}">
+										<img  class="img-rounded" th:src="@{${photoUrl}}" th:unless="${#strings.isEmpty(photoUrl)}" style="width: 25px"/>
+									</div>
+								</div>
+								<div class="image" th:if="${#strings.isEmpty(message.fromUser)}">
+									<div class="img-rounded">
+										<i class="fa fa-user"></i>
+									</div>
+								</div>
+							</div>
+							<div class="image" th:if="${#strings.isEmpty(message.fromUser)}" >
+								<div class="img-thumbnail" >
+									<i class="fa fa-user"></i>
+								</div>
+							</div>
+						</div>
+						<div class="image" th:if="${#strings.isEmpty(message.fromUser)}">
+							<div class="img-circle">
+								<i class="fa fa-user"></i>
+							</div>
+						</div>
+						<hr/>
+						<div>
+							<h4><span>Insightly Gmail Gadget</span></h4>
+						</div>
+						<hr/>
+					</div>
+					<div>
+						<p>
+							<span>Sir, arun is using code as it is but adding few null checks and modifying UI part. After completion of checking you will find my as it is along with that few modifications like null ckecks. Arun said I written a code which a database many times, but at the time of development I did't know this point, so arun is  trying implementing that
+								and he is using my controller, ajax calls as it is...
+								9:47 AM
+							</span>
+						</p>
+					</div>
+			</div>
+			<div class="pull-right">
+				<a  href="#" id="mvtrash" th:attr="data-data=${'message.objectUUID'},data-url=@{'/mail/getmessages' },data-frgid=${'messages'}">
+					<i class="fa fa-trash-o"></i>
+				</a>
+			</div>
+		</div>
+	</body>
+</html>

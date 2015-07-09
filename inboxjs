@@ -1,0 +1,62 @@
+/**
+ * inbox.js
+ */
+"use strict";
+
+// <![CDATA[
+(function ( $ )
+{
+	$("#markallasunread" ).click(function(e){
+		e.preventDefault();
+		$.ajax({url:"/mail/markasunread", type:"GET",
+			success:function(data)
+			{
+				if(data.status==='OK' && data != null)
+				{
+					data.data > 0 ? $( '#unreadMsgCount' ).text( data.data ) : $( '#unreadMsgCount' ).addClass( 'hidden' );
+				}
+				else
+				{
+					window.Location=data.urlToRedirect;
+				}
+			}
+
+		});
+	});
+	$("#markallasRead" ).click(function(e){
+		e.preventDefault();
+		$.ajax({url:"/mail/markasread", type:"GET",
+			success:function(data)
+			{
+				if(data.status==='OK' && data != null)
+				{
+					data.data > 0 ? $( '#unreadMsgCount' ).text( data.data ) : $( '#unreadMsgCount' ).addClass( 'hidden' );
+				}
+				else
+				{
+					window.Location=data.urlToRedirect;
+				}
+			}
+
+		});
+	});
+	$("#deleteallinbox" ).click(function(e){
+		e.preventDefault();
+		$.ajax({url:"/mail/deleteall", type:"GET",
+			success:function(data)
+			{
+				if(data.status==='OK' && data != null)
+				{
+					var messagesCount = $( 'messagescount' );
+					messagesCount.text( data.data );
+				}
+				else
+				{
+					window.Location=data.urlToRedirect;
+				}
+			}
+		});
+	});
+})( jQuery );
+// ]]>
+

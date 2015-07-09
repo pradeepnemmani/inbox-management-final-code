@@ -1,0 +1,77 @@
+if ( authUser != null && authUser ) {
+		 $.ajax( { url: "/mail/unreadmessagescount", type: 'GET',
+			 success: function ( data ) {
+				 if ( data != null && data.status === "OK" ) {
+					 data.data > 0 ? $( '#unreadMsgCount' ).text( data.data ) : $( '#unreadMsgCount' ).addClass( 'hidden' );
+					 }
+						 else if ( data.status === "ERROR" ) {
+						 window.location = data.redirectUrl;
+				 }
+			 }
+		 } );
+			 var $inboxmessagescount=0;
+			 $.ajax({url:"/mail/messagescount",type:'GET',data: { type: "inbox"},
+				 success:function(data)
+				 {
+					 if(data.status==='OK')
+					 {
+						 if(data.data > 0)
+						 {
+							 $inboxmessagescount=data.data;
+						 }
+					 }
+					 else
+					 {
+						 window.Location=data.urlToRedirect;
+					 }
+				 }
+			 });
+		 function manipulateDate() {
+		 $( "span[id='creationDate']" ).each( function () {
+		 var ele = $( this ), $stDate = ele.data( 'date' );
+		 if ( $stDate != null ) {
+		 ele.text( moment( $stDate ).format( 'DD-MMM-YYYY' ) );
+		 }
+		 } );
+		 }
+		$( "#inbox" ).click( function ( e ) {
+		 e.preventDefault();
+		 $.ajax( {url: "/mail/gettopmessages", type: 'GET',
+		 success: function ( data ) {
+		 var inboxsize = 0 < $( '#unreadMsgCount' ).text() ? $( '#unreadMsgCount' ).text() : 0;
+		 var html="<li><span class='text-left'><a  id='messages' href='/mail/showinbox'>" + "Messages(" + $inboxmessagescount + ")" + "</a></span></li><div class='list-group ' style='margin-bottom: 0px;padding-left: 0px'>";
+		 var $msgContainer = $( '#unreadMsgsDropDown' );
+		 if ( data.data instanceof  Array && data.data.length > 0 ) {
+		 if ( data != null && data.status === "OK" ) {
+		 $.each( data.data, function ( index, value ) {
+		 html += "<a href='/mail/showinbox' class='list-group-item' style='margin-bottom: 0'><li class='ellipsis'>";
+		 if ( value.fromUser != null ) {
+		 if ( value.fromUser.firstName != null ) {
+		 html += "<span >" + value.fromUser.firstName + "</span></br>";
+		 }
+		 }
+		 html += "<span>" + value.messageSubject + "</span></br>";
+		 html += "<span style='margin-left:90px;color:cornflowerblue' id='creationDate" + "' data-date='" + value.creationDate + "'>Date</span>";
+		 html += "</li></a>";
+		 } );
+		 $( '#unreadMsgCount' ).text() - (data.data.length) > 0 ? $( '#unreadMsgCount' ).text( ($( '#unreadMsgCount' ).text()) - (data.data.length) ) : $( '#unreadMsgCount' ).text( 0 ).addClass( 'hidden' );
+		 }
+		 else {
+		 console.log( data.data.message );
+		 }
+		 }
+			 if(data.data.length==0)
+			 {
+				 html +="<p style='text-align: center'><span>No New Messages</span></p>";
+			 }
+		 html += "</div>";
+		 $msgContainer.empty().append( html );
+		 manipulateDate();
+		 }
+		 } );
+		 } );
+
+		}
+
+	} );
+	/*]]>*/

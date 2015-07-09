@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<style>
+			span.icon {
+				margin-right: 1.5cm;
+			}
+		</style>
+		<th:block th:replace="fragments/layout::fragmentCSSCommon"/>
+	</head>
+	<body>
+		<div class="body-main">
+			<div class="body-header">
+				<div th:replace="fragments/layout::fragmentHeader"></div>
+				<div th:replace="fragments/menubar::fragmentMenuBar"></div>
+			</div>
+			<div class="row" style="padding-bottom: 0px">
+				<div class="col-md-offset-3 col-md-7 ">
+					<div class="row" style="margin-bottom: 0px">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="panel panel-default" style="margin-bottom: 0px">
+										<div class="panel-body">
+										<div class="col-md-2" >
+											<i class="label label-primary">Eventinn Inbox</i>
+										</div>
+											<div class="col-md-offset-6 col-md-2">
+												<span th:text="${user.firstName}">Profile Name</span>
+											</div>
+											<div class="col-md-2">
+												<span>
+													<div th:unless="${#strings.isEmpty(user.profile)}">
+														<div th:unless="${#strings.isEmpty(user.profile.photo)}">
+															<div class="imgContainer" th:with="photoUrl =${user.profile.photo ne null ? user.profile.photo : ''}">
+																<img th:src="@{${photoUrl}}" th:unless="${#strings.isEmpty(photoUrl)}" style="width: 25px"/>
+															</div>
+														</div>
+													</div>
+													<div th:if="${#strings.isEmpty(user.profile)}">
+														<div class="img-thumbnail">
+															<i class="fa fa-user"></i>
+														</div>
+													</div>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-3" style="padding-left: 0px; padding-right: 0px">
+									<!--<div class="panel panel-default">-->
+										<!--<div class="panel-body">-->
+											<ul class="list-unstyled" style="line-height:30px;background-color:#eeeeee; height:400px;">
+												<li>
+													<a class=" btn-sm" href="#" id="allinboxmessages" th:attr="data-url=@{'/mail/getmessages' },data-frgid=${'messages'}">
+														<i class="fa fa-inbox"></i><span>Messages</span>
+													<span class="badge" id="messagescount">InboxCount</span>
+													</a>
+													<hr/>
+												</li>
+												<li>
+													<a class=" btn-sm" href="#" id="allsent" th:attr="data-url=@{'/mail/getsentmessages' },data-frgid=${'messages'}">
+														<i class="fa fa-external-link"></i><span>Sent</span>
+													<span class="badge" id="sentcount">SentCount</span>
+													</a>
+													<hr/>
+												</li>
+												<li>
+													<a class=" btn-sm" href="#" id="alltrash" th:attr="data-url=@{'/mail/gettrashmessages' },data-frgid=${'messages'}">
+														<i class="fa fa-trash-o"></i><span>Trash</span>
+													<span class="badge" id="trashcount">TrashCount</span>
+													</a>
+												</li>
+											</ul>
+										<!--</div>-->
+									<!--</div>-->
+								</div>
+								<div class="col-md-9" style="padding-left: 0px">
+									<!--<div class="panel panel-default">-->
+										<!--<div class="panel-body">-->
+											<div class="row">
+												<div class="col-md-2">
+														<a class="btn btn-default btn-sm" href="#"><i class="fa fa-edit"></i>&nbsp;<span th:text="#{new.LABEL}">New</span></a>
+												</div>
+												<div class="col-md-offset-7 col-md-3">
+													<div class="dropdown">
+														<button class="btn btn-primary btn-sm" type="button" id="options" data-toggle="dropdown" aria-expanded="true">
+															<i class="fa fa-cogs"></i>&nbsp;<span th:text="#{options.LABEL}">Options</span>
+															<span class="caret"></span>
+														</button>
+														<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+															<li role="presentation"><a  id="markallasRead" role="menuitem" tabindex="-1" href="#">MarkAllAsRead</a></li>
+															<li role="presentation"><a id="markallasunread" tabindex="-1" href="#">MarkAllAsUnRead</a></li>
+															<li role="presentation"><a id="deleteallinbox" tabindex="-1" href="#">DeleteAllInbox</a></li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<hr style="margin-top: 0px;margin-bottom: 0px"/>
+											<span id="messages" th:attr="data-url=@{'/mail/getmessages' },data-frgid=${'messages'}"></span>
+											<div id="listofmessages">
+											</div>
+										<!--</div>-->
+									<!--</div>-->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<th:block th:replace="fragments/layout::fragmentJSCommon"/>
+
+		<script src="../../../..//resources/js/message/inbox.js" th:src="@{'/resources/js/message/inbox.js?v=' + #{version}}"></script>
+		<script language="JavaScript">
+			function loadFragment( url, fragmentId, callbackFn ) {
+				$( '#listofmessages' ).empty().append( '<div class="loading" ><i class="fa fa-spinner fa-spin fa-3x"></i></div>' ).einnLoadFragment( {
+					url: url, fragmentId: fragmentId, fragmentToInsert: fragmentId,
+					successCallback: function ( r ) {
+						if ( callbackFn ) {
+							callbackFn();
+						}
+					}
+				} );
+			}
+			function initPaginationListeners( $ele ) {
+				$ele.click( function ( e ) {
+					var $this = $( this );
+					e.preventDefault();
+					loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+						initPaginationListeners( $( 'a.messages-pagination' ) );
+					} );
+				} );
+			}
+
+			function manipulateDate() {
+				$( "span[id='creationDate']" ).each( function () {
+					var ele = $( this ), $stDate = ele.data( 'date' );
+					if ( $stDate != null ) {
+						ele.text( moment( $stDate ).format( 'DD-MMM-YYYY' ) );
+					}
+				} );
+			}
+			$( '#allinboxmessages' ).click( function ( e ) {
+				var $this = $( this );
+				e.preventDefault();
+				loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+				} );
+			} );
+
+			$('#allsent' ).click(function(e)
+			{
+				var $this=$(this);
+				e.preventDefault();
+				loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+				} );
+			});
+			$('#alltrash' ).click(function(e)
+			{
+				var $this=$(this);
+				e.preventDefault();
+				loadFragment( $this.data( 'url' ), $this.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+					initClickListener();
+				} );
+			});
+
+			$( document ).ready( function () {
+				$.ajax( {url: "/mail/messagescount", type: 'GET',  data: { type: "inbox"},
+					success: function ( data ) {
+						var count = $( "span[id='messagescount']" );
+						count.text( data.data );
+					}
+				} );
+				$.ajax( {url: "/mail/messagescount", type: 'GET',  data: { type: "sent"},
+					success: function ( data ) {
+						var count = $( "span[id='sentcount']" );
+						count.text( data.data );
+					}
+				} );
+				$.ajax( {url: "/mail/messagescount", type: 'GET',  data: { type: "trash"},
+					success: function ( data ) {
+						var count = $( "span[id='trashcount']" );
+						count.text( data.data );
+					}
+				} );
+				var $msg = $( '#messages' );
+				loadFragment( $msg.data( 'url' ), $msg.data( 'frgid' ), function () {
+					initPaginationListeners( $( 'a.messages-pagination' ) );
+				} );
+			} );
+			function initClickListener()
+			{
+				$("a.list-group-item" ).click(function(e){
+					e.preventDefault();
+					var $message=$(this);
+					loadFragment($message.data('url'),$message.data('frgid'),null);
+				});
+
+				$("#mvtrash" ).click(function(e){
+					e.preventDefault();
+					var $id=$(this);
+					$.ajax({url:'/mail/deleteMessage',type:'GET',data:{objectUUID:$id.data('data')},
+						success:function(data)
+						{
+							if(data.status==='OK')
+							{
+								loadFragment($id.data('url'),$id.data('frgid'),function(){
+									initPaginationListeners($('a.messages-pagination'));
+								});
+							}
+						}
+
+					});
+				});
+			}
+		</script>
+
+	</body>
+
+</html>

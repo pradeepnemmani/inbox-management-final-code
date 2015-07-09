@@ -1,0 +1,459 @@
+package com.cando.message.controller;
+
+<<<<<<< HEAD
+import com.cando.core.common.Response;
+import com.cando.core.exceptions.CDException;
+import com.cando.core.exceptions.UnAuthenticatedException;
+import com.cando.events.common.IConstants;
+import com.cando.events.dto.CDJSONResponse;
+import com.cando.events.model.CDUser;
+import com.cando.message.model.CDMessage;
+import com.cando.message.repository.MessageRepository;
+import com.cando.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+=======
+>>>>>>> an
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+<<<<<<< HEAD
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
+=======
+>>>>>>> an
+
+/**
+ * Package Name: com.cando.message.controller
+ * Author: Pradeep Kumar
+ */
+@Controller
+@RequestMapping(value = "/mail")
+public class MessageController
+{
+	/*@Autowired
+	UserRepository userRepository;
+	@Autowired
+	MessageRepository messageRepository;
+
+	@RequestMapping(value = "/showinbox")
+	public String showinbox( Model model )
+	{
+		String viewName = "/inbox/inbox";
+		try
+		{
+			CDUser user = userRepository.getAuthenticatedUser();
+			model.addAttribute( "user", user );
+		}
+		catch ( UnAuthenticatedException uas )
+		{
+			viewName = "redirectUrl:/auth/login";
+		}
+		catch ( CDException e )
+		{
+			viewName = "/user";
+		}
+		return viewName;
+
+	}
+
+
+	*//**
+	 * This method handles the requests for the request mapping "/mail/inboxcount" (with request method being GET) and retrieves the count of unread
+	 * messages
+	 *
+	 * @return jsonResponse object
+	 *//*
+	@RequestMapping(value = "/unreadmessagescount")
+	@ResponseBody
+	public CDJSONResponse getUnreadMessagesCount()
+	{
+		CDJSONResponse response = new CDJSONResponse();
+		try
+		{
+			CDUser authUser = userRepository.getAuthenticatedUser();
+			response.status = IConstants.EnumResponseStatus.OK;
+			int count = messageRepository.getCountOfUnreadMessages( authUser.getObjectUUID() );
+			response.setData( count );
+		}
+		catch ( UnAuthenticatedException uae )
+		{
+			response.status = IConstants.EnumResponseStatus.ERROR;
+			response.redirectUrl = "/auth/login";
+			response.message = uae.getMessage();
+		}
+		catch ( Exception e )
+		{
+			response.status = IConstants.EnumResponseStatus.ERROR;
+			response.redirectUrl = "/user";
+			response.message = e.getMessage();
+		}
+		return response;
+	}
+
+	@RequestMapping(value = "/gettopmessages")
+	@ResponseBody
+	public CDJSONResponse getTopMessages()
+	{
+		CDJSONResponse response = new CDJSONResponse();
+		try
+		{
+			CDUser authUser = userRepository.getAuthenticatedUser();
+			List<CDMessage> messages = messageRepository.showtopmessages();
+			response.status = IConstants.EnumResponseStatus.OK;
+			response.setData( messages );
+		}
+		catch ( UnAuthenticatedException uae )
+		{
+			response.status = IConstants.EnumResponseStatus.ERROR;
+			response.redirectUrl = "/user";
+			response.message = uae.getMessage();
+
+		}
+		catch ( CDException e )
+		{
+			response.status = IConstants.EnumResponseStatus.ERROR;
+			response.redirectUrl = "/home";
+			response.message = e.getMessage();
+		}
+		return response;
+	}
+
+
+	@RequestMapping(value = "/messagescount")
+	@ResponseBody
+	public CDJSONResponse inboxCount( @RequestParam(value = "type") String type )
+	{
+		CDJSONResponse response = new CDJSONResponse();
+
+		try
+		{
+			CDUser authUser = userRepository.getAuthenticatedUser();
+			int count = 0;
+			switch ( type )
+			{
+				case "inbox":
+					count = messageRepository.getCountOfReceivedMessages( userRepository.getAuthenticatedUser().getObjectUUID() );
+					break;
+				case "sent":
+					count = messageRepository.getCountOfSentMessages( userRepository.getAuthenticatedUser().getObjectUUID() );
+					break;
+				case "trash":
+					count = messageRepository.getCountOfTrashMessages( userRepository.getAuthenticatedUser().getObjectUUID() );
+					break;
+			}
+
+			response.setData( count );
+			response.status = IConstants.EnumResponseStatus.OK;
+		}
+		catch ( UnAuthenticatedException uae )
+		{
+			response.setMessage( uae.getMessage() );
+			response.setRedirectUrl( "redirectUrl:/auth/login" );
+			response.status = IConstants.EnumResponseStatus.ERROR;
+		}
+		catch ( CDException e )
+		{
+			response.setMessage( e.getMessage() );
+			response.setRedirectUrl( "/user" );
+			response.status = IConstants.EnumResponseStatus.ERROR;
+		}
+		return response;
+	}
+
+	@RequestMapping(value = "/getinboxmessages")
+	@ResponseBody
+	public CDJSONResponse getInboxMessages( @RequestParam(value = "from") int from, @RequestParam(value = "to") int to )
+	{
+		CDJSONResponse response = new CDJSONResponse();
+		try
+		{
+			CDUser user = userRepository.getAuthenticatedUser();
+			List<CDMessage> messageList = messageRepository.getMessages( "inbox", from, to );
+			response.setData( messageList );
+			response.status = IConstants.EnumResponseStatus.OK;
+		}
+		catch ( UnAuthenticatedException uae )
+		{
+			response.setRedirectUrl( "redirectUrl:/auth/login" );
+			response.setMessage( uae.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		catch ( CDException e )
+		{
+			response.setRedirectUrl( "/user" );
+			response.setMessage( e.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		return response;
+	}
+
+	@RequestMapping(value = "/getmessages")
+	public String getMessages( @RequestParam(value = "pageNo", required = false) Integer pageNo, @RequestParam(value = "fragmentId", defaultValue = "") String fragmentId, Model model )
+	{
+		String viewName = "inbox/messages";
+
+		try
+		{
+			int pageNumber = pageNo == null ? 0 : pageNo.intValue();
+			if ( pageNumber < 0 )
+			{
+				pageNumber = 0;
+			}
+			int pageLimit = 5;
+			List<CDMessage> list = null;
+			CDUser user = userRepository.getAuthenticatedUser();
+			int totalmessages = messageRepository.getCountOfReceivedMessages( user.getObjectUUID() );
+			int totalPages=calculateTotalNoPages( totalmessages, pageLimit );
+			if ( totalmessages > 0 )
+			{
+				list = messageRepository.getMessages( "inbox", pageNumber, pageLimit );
+			}
+			else
+			{
+				model.addAttribute( "messages", null );
+			}
+			model.addAttribute( "mappingUrl", "/mail/getmessages" );
+			model.addAttribute( "messages", list );
+			model.addAttribute( "totalPages",totalPages );
+			model.addAttribute( "pn", pageNumber );
+		}
+		catch ( CDException e )
+		{
+			viewName = "redirectUrl:/auth/login";
+		}
+		return viewName;
+	}
+
+	@RequestMapping(value = "/getsentmessages")
+	public String getSentMessages( @RequestParam(value = "pageNo", required = false) Integer pageNo, @RequestParam(value = "fragmentId", defaultValue = "") String fragmentId, Model model )
+	{
+		String viewName = "inbox/messages";
+
+		try
+		{
+			int pageNumber = pageNo == null ? 0 : pageNo.intValue();
+			if ( pageNumber < 0 )
+			{
+				pageNumber = 0;
+			}
+			int pageLimit = 5;
+			List<CDMessage> list = null;
+			CDUser user = userRepository.getAuthenticatedUser();
+			int totalmessages = messageRepository.getCountOfSentMessages( user.getObjectUUID() );
+			int totalPages=calculateTotalNoPages( totalmessages, pageLimit );
+			if ( totalmessages > 0 )
+			{
+				list = messageRepository.getMessages( "sent", pageNumber, pageLimit );
+			}
+			else
+			{
+				model.addAttribute( "messages", null );
+			}
+			model.addAttribute( "mappingUrl", "/mail/getsentmessages" );
+			model.addAttribute( "messages", list );
+			model.addAttribute( "totalPages", calculateTotalNoPages( totalmessages, pageLimit ) );
+			model.addAttribute( "pn", pageNumber );
+		}
+		catch ( CDException e )
+		{
+			viewName = "redirectUrl:/auth/login";
+		}
+		return viewName;
+	}
+
+	@RequestMapping(value = "/gettrashmessages")
+	public String getTrashMessages( @RequestParam(value = "pageNo", required = false) Integer pageNo, @RequestParam(value = "fragmentId", defaultValue = "") String fragmentId, Model model )
+	{
+		String viewName = "inbox/messages";
+
+		try
+		{
+			CDUser user = userRepository.getAuthenticatedUser();
+			int totalmessages = messageRepository.getCountOfTrashMessages( user.getObjectUUID() );
+			int pageNumber = pageNo == null ? 0 : pageNo.intValue();
+			int pageLimit = 5;
+			List<CDMessage> list = null;
+			int totalPages=calculateTotalNoPages( totalmessages, pageLimit );
+			if ( pageNumber < 0 )
+			{
+				pageNumber = 0;
+			}
+			else
+			{
+				if(pageNumber >= totalPages)
+				{
+					pageNumber=totalPages-1;
+				}
+			}
+			if ( totalmessages > 0 )
+			{
+				list = messageRepository.getMessages( "trash", pageNumber, pageLimit );
+			}
+			else
+			{
+				model.addAttribute( "messages", null );
+			}
+			model.addAttribute( "totalMessages", totalmessages );
+			model.addAttribute( "mappingUrl", "/mail/gettrashmessages" );
+			model.addAttribute( "messages", list );
+			model.addAttribute( "totalPages",totalPages );
+			model.addAttribute( "pn", pageNumber );
+
+		}
+		catch ( CDException e )
+		{
+			viewName = "redirectUrl:/auth/login";
+		}
+		return viewName;
+	}
+
+	@RequestMapping( value = "/getmessage", method = RequestMethod.GET )
+
+	public String getMessage( @RequestParam( value = "objectUUID", required = true ) String objectUUID ,Model model)
+	{
+		String viewName="/inbox/message";
+		try
+		{
+			CDUser authUser = userRepository.getAuthenticatedUser();
+			CDMessage message = messageRepository.projectTo( objectUUID );
+			model.addAttribute( "message",message );
+		}
+
+		catch ( CDException e )
+		{
+			viewName="redirectUrl:/auth/login";
+		}
+		return viewName;
+	}
+
+	@RequestMapping( value = "/markasunread" )
+	@ResponseBody
+	public CDJSONResponse markAsUnread()
+	{
+		CDJSONResponse response = new CDJSONResponse();
+		try
+		{
+			CDUser user = userRepository.getAuthenticatedUser();
+			int count = messageRepository.markAllAsUnReadMessage();
+			response.setData( count );
+			response.status = IConstants.EnumResponseStatus.OK;
+		}
+		catch ( UnAuthenticatedException uae )
+		{
+			response.setRedirectUrl( "redirectUrl:/auth/login" );
+			response.setMessage( uae.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		catch ( CDException e )
+		{
+			response.setRedirectUrl( "/user" );
+			response.setMessage( e.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		return response;
+	}
+
+	@RequestMapping( value = "/markasread" )
+	@ResponseBody
+	public CDJSONResponse markAsRead()
+	{
+		CDJSONResponse response = new CDJSONResponse();
+		try
+		{
+			CDUser user = userRepository.getAuthenticatedUser();
+			int count = messageRepository.markAllAsReadMessage();
+			response.setData( count );
+			response.status = IConstants.EnumResponseStatus.OK;
+		}
+		catch ( UnAuthenticatedException uae )
+		{
+			response.setRedirectUrl( "redirectUrl:/auth/login" );
+			response.setMessage( uae.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		catch ( CDException e )
+		{
+			response.setRedirectUrl( "/user" );
+			response.setMessage( e.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		return response;
+	}
+
+	@RequestMapping( value = "/deleteall" )
+	@ResponseBody
+	public CDJSONResponse markAsArchieve()
+	{
+		CDJSONResponse response = new CDJSONResponse();
+		try
+		{
+			CDUser user = userRepository.getAuthenticatedUser();
+			int count = messageRepository.markAllAsArchievedMessage();
+			response.setData( count );
+			response.status = IConstants.EnumResponseStatus.OK;
+		}
+		catch ( UnAuthenticatedException uae )
+		{
+			response.setRedirectUrl( "redirectUrl:/auth/login" );
+			response.setMessage( uae.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		catch ( CDException e )
+		{
+			response.setRedirectUrl( "/user" );
+			response.setMessage( e.getMessage() );
+			response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		return response;
+	}
+
+<<<<<<< HEAD
+	@RequestMapping(value = "/deleteMessage")
+	@ResponseBody
+	public CDJSONResponse deleteMessage(@RequestParam(value = "objectUUID") String objectUUID)
+	{
+		CDJSONResponse response=new CDJSONResponse();
+		try
+		{
+			CDUser user=userRepository.getAuthenticatedUser();
+			CDMessage message=messageRepository.projectTo( objectUUID );
+			List<CDMessage> messageList=new ArrayList<>(  );
+			if(message !=null)
+			{
+				messageList.add( message );
+				Response status=messageRepository.changeStatus( messageList, IConstants.EnumMessageStatus.ARCHIVED );
+				if(status.get( "save" )!=null)
+				{
+					response.setStatus( IConstants.EnumResponseStatus.OK );
+				}
+			}
+				response.setStatus( IConstants.EnumResponseStatus.ERROR );
+		}
+		catch ( CDException e)
+		{
+				response.setRedirectUrl( "redirectUrl:/auth/login" );
+		}
+		return  response;
+	}
+	/**
+=======
+	*//**
+>>>>>>> an
+	 * This method calculates total number of pages based on the results count and the page limit
+	 *
+	 * @param resultsCount
+	 * 		Total count of result
+	 * @param pageLimit
+	 * 		Page limit
+	 * @return total no of pages
+	 *//*
+	private int calculateTotalNoPages( int resultsCount, int pageLimit )
+	{
+		int numPages = resultsCount / pageLimit;
+		return ( resultsCount % pageLimit == 0 ? numPages : numPages + 1 );
+	}*/
+}
+

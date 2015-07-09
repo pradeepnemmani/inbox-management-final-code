@@ -1,0 +1,87 @@
+#----------------------------------------------------
+#CDMessage Repository named queries
+#----------------------------------------------------
+
+##Finds all Sent Messages from Particular User, Sorted by Descending Order of message node creation date
+#CDMessage.getAllSentMessages=MATCH ( user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'FROM'}]-(message:Message) \
+#  RETURN message \
+#  ORDER BY message.creationDate DESC
+#
+##Finds all Inbox Messages for Particular User
+#CDMessage.getAllInboxMessages=MATCH (user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'TO'}]-(message:Message) \
+#  WHERE r.relationStatus='READ' OR r.relationStatus='NEW' \
+#  RETURN message \
+#  ORDER BY message.creationDate DESC
+#
+##Finds count of Sent Messages from Particular User
+#CDMessage.getCountOfSentMessages=MATCH (user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'FROM'}]-(message:Message)\
+#  RETURN COUNT(r)
+#
+##Finds count Received Messages for Particular User
+#CDMessage.getCountOfReceivedMessages=MATCH (user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'TO'}]-(message:Message)\
+#   WHERE r.relationStatus='READ' OR r.relationStatus='NEW'\
+#   RETURN COUNT(r)
+#
+##Finds all Unread Messages from particular, Sorted by Descending Order of message node creation date
+#CDMessage.getAllUnreadMessages=MATCH ( user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'TO'}]-(message:Message)\
+#   WHERE r.relationStatus='NEW'\
+#   RETURN message \
+#  ORDER  BY message.creationDate DESC
+#
+##Finds all Unread Messages from particular, Sorted by Descending Order of message node creation date
+#CDMessage.getCountOfUnreadMessages=MATCH ( user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'TO'}]-(message:Message)\
+#   WHERE r.relationStatus='NEW' \
+#  RETURN COUNT(r)
+#
+##Finds all Read Messages from particular, Sorted by Descending Order of message node creation date
+#CDMessage.getAllReadMessages=MATCH ( user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'TO'}]-(message:Message) WHERE r.relationStatus='READ' RETURN message ORDER  BY message.creationDate DESC
+#
+##Finds count Read Messages from particular, Sorted by Descending Order of message node creation date
+#CDMessage.getCountOfAllReadMessages=MATCH ( user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION{messageRelationType:'TO'}]-(message:Message) \
+#  WHERE r.relationStatus='READ'\
+#  RETURN COUNT(r)
+#
+##Finds the Threaded Message for a particular Message
+#CDMessage.getParentMessage=MATCH(parentMessage:Message)<-[:THREADED_MESSAGE]-(childMessage:Message{ objectUUID:{messageUUID}}) \
+#  RETURN parentMessage
+#
+##Finds the user who sent a message
+#CDMessage.getSentUser=MATCH (user:User)<-[:CDMESSAGE_RELATION{messageRelationType:'FROM'}]-(message:Message{objectUUID:{messageUUID}})\
+#   RETURN user
+#
+##Finds the trash messages
+#CDMessage.getAllTrashMessages=MATCH(user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION]-(message:Message)\
+#  WHERE r.relationStatus='ARCHIVED'\
+#   RETURN message
+#
+##Finds the trash messages
+#CDMessage.getCountOfTrashMessages=MATCH(user:User{objectUUID:{userUUID}})<-[r:CDMESSAGE_RELATION]-(message:Message)\
+#  WHERE r.relationStatus='ARCHIVED'\
+#   RETURN COUNT(r)
+
+
+# new apis
+
+CDMessage.getAllInboxMessages=MATCH (toUser:User{objectUUID:{userUUID}})<-[toRel:MESSAGE_RELATION{messageType:'MESSAGE',messageRelationType:'TO'}]-(message) \
+     WHERE (toRel.status='READ' OR toRel.status='NEW')\
+     WITH message ,toRel as rel \
+     MATCH (fromUser)<-[:MESSAGE_RELATION{messageType:'MESSAGE',messageRelationType:'FROM'}]-(message) \
+     RETURN message,rel as relation,fromUser.objectUUID AS userUUID, fromUser.email AS email, fromUser.firstName AS firstName, fromUser.lastName AS lastName, fromUser.profile AS profile ORDER BY message.creationDate DESC  \
+
+CDMessage.getCountOfAllInboxMessages=MATCH (toUser:User{objectUUID:{userUUID}})<-[toRel:MESSAGE_RELATION{messageType:'MESSAGE',messageRelationType:'TO'}]-(message) \
+     WHERE (toRel.status='READ' OR toRel.status='NEW')\
+     RETURN COUNT(message)
+
+CDMessage.getAllInboxNotifications=MATCH (toUser:User{objectUUID:{userUUID}})<-[toRel:MESSAGE_RELATION{messageType:'NOTIFICATION',messageRelationType:'TO'}]-(message) \
+     WHERE (toRel.status='READ' OR toRel.status='NEW')\
+     RETURN message,toRel as relation ORDER BY message.creationDate DESC
+
+CDMessage.getCountOfAllInboxNotifications=MATCH (toUser:User{objectUUID:{userUUID}})<-[toRel:MESSAGE_RELATION{messageType:'NOTIFICATION',messageRelationType:'TO'}]-(message) \
+     WHERE (toRel.status='READ' OR toRel.status='NEW')\
+     RETURN COUNT(message)
+
+CDMessage.getNewMessagesCount=MATCH (user:User{objectUUID:{userUUID}})<-[:MESSAGE_RELATION{messageType:'MESSAGE',messageRelationType:'TO',status:'NEW'}]-(message) \
+    RETURN COUNT(message)
+
+CDMessage.getNewNotificationsCount=MATCH (user:User{objectUUID:{userUUID}})<-[:MESSAGE_RELATION{messageType:'NOTIFICATION',messageRelationType:'TO',status:'NEW'}]-(message) \
+    RETURN COUNT(message)
